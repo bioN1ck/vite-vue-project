@@ -22,7 +22,7 @@ const onButtonPress = () => {
 <template>
   <div class="search-input--container">
     <app-input class="search-input--field" placeholder="Search" @changeValue="onChangeValue" />
-    <app-button size="large" label="search" @click="onButtonPress" />
+    <app-button class="search-input--btn" size="large" label="search" @click="onButtonPress" />
   </div>
 </template>
 
@@ -33,5 +33,8 @@ const onButtonPress = () => {
 }
 .search-input--field {
   margin-right: 14px;
+}
+.search-input--btn {
+  width: 282px;
 }
 </style>
