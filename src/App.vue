@@ -6,5 +6,4 @@ import MovieListPage from './components/MovieListPage.vue';
   <movie-list-page />
 </template>
 
-<style scoped>
-</style>
+<style scoped></style>

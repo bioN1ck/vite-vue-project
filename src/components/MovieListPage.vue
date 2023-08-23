@@ -1,5 +1,5 @@
-<script setup lang='ts'>
-import { computed, ComputedRef } from 'vue'
+<script setup lang="ts">
+import { computed, ComputedRef } from 'vue';
 
 import MovieSearchSection from './MovieSearchSection.vue';
 import Switcher from './Switcher.vue';
@@ -9,7 +9,6 @@ import { useFetch } from '../composables/useFetch';
 import { Movie, MovieResponse } from '../models/movie.model';
 import { mapRawToMovie } from '../helpers/functions';
 
-
 const { result, execute } = useFetch<MovieResponse>('http://localhost:4000/movies?limit=12');
 execute();
 
@@ -18,8 +17,7 @@ const movies: ComputedRef<Movie[]> = computed(() => {
 });
 const total = computed(() => {
   return result.value?.totalAmount || 0;
-})
-
+});
 </script>
 
 <template>
@@ -29,10 +27,7 @@ const total = computed(() => {
     <div class="movie-list-page--row-counter">
       <span>{{ total }}</span> movie{{ total > 1 && 's' }} found
     </div>
-    <Switcher
-      label="Sort by"
-      :buttons="['Release date', 'Rating']"
-    />
+    <Switcher label="Sort by" :buttons="['Release date', 'Rating']" />
   </div>
 
   <movie-list :movies="movies" />

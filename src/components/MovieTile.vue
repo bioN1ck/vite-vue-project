@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Directive } from 'vue'
+import { Directive } from 'vue';
 import { Movie } from '../models/movie.model';
 // import LazyImage from './LazyImage.vue';
 
@@ -20,7 +20,7 @@ const vLazyload: Directive<HTMLImageElement> = {
   unmounted: () => {
     // TODO: think about disconnecting observer somehow
   },
-}
+};
 
 defineProps<{
   movie: Movie;
@@ -31,7 +31,7 @@ defineProps<{
   <div class="movie-tile">
     <div>
       <img v-lazyload="movie.imageUrl" alt="" />
-<!--      <lazy-image :src="movie.imageUrl" />-->
+      <!--      <lazy-image :src="movie.imageUrl" />-->
       <div class="movie-tile__description">
         <div>
           <h3>{{ movie.movieName }}</h3>

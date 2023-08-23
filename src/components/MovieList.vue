@@ -1,4 +1,4 @@
-<script setup lang='ts'>
+<script setup lang="ts">
 import MovieTile from './MovieTile.vue';
 import { Movie } from '../models/movie.model';
 
@@ -11,7 +11,7 @@ defineProps<Props>();
 
 <template>
   <div class="movie-list">
-    <movie-tile v-for="movie of movies" :key="movie.id" :movie="movie"/>
+    <movie-tile v-for="movie of movies" :key="movie.id" :movie="movie" />
   </div>
 </template>
 

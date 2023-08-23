@@ -1,4 +1,4 @@
-<script setup lang='ts'>
+<script setup lang="ts">
 import SearchInput from './SearchInput.vue';
 import Logo from './Logo.vue';
 import Switcher from './Switcher.vue';
@@ -10,9 +10,7 @@ import Switcher from './Switcher.vue';
       <logo />
     </div>
     <div class="movie-search-section--container">
-      <div class="movie-search-section--container-title">
-        FIND YOUR MOVIE
-      </div>
+      <div class="movie-search-section--container-title">FIND YOUR MOVIE</div>
       <search-input class="movie-search-section--container-input" />
       <switcher label="Search by" :buttons="['title', 'genre']" />
     </div>

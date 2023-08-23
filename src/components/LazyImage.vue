@@ -1,17 +1,17 @@
-<script setup lang='ts'>
+<script setup lang="ts">
 import { reactive, computed, ref, onMounted, onBeforeUnmount } from 'vue';
 
 type Props = {
   src: string;
   alt?: string;
-}
+};
 const props = defineProps<Props>();
 
 const imgRef = ref(null);
 const state = reactive({
   observer: null,
   intersected: false,
-  loaded: false
+  loaded: false,
 });
 const loadingImg = 'src/assets/loading-img.png';
 
@@ -20,10 +20,7 @@ const srcImage = computed(() => {
 });
 
 const load = () => {
-  if (
-    imgRef.value &&
-    imgRef.value.getAttribute('src') !== loadingImg
-  ) {
+  if (imgRef.value && imgRef.value.getAttribute('src') !== loadingImg) {
     state.loaded = true;
   }
 };
@@ -46,6 +43,5 @@ onBeforeUnmount(() => {
 </script>
 
 <template>
-  <img ref='imgRef' :src="srcImage" :alt="alt" @load="load" />
+  <img ref="imgRef" :src="srcImage" :alt="alt" @load="load" />
 </template>
-

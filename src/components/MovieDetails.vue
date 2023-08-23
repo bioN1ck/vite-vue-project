@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { Movie } from '../models/movie.model';
 
-type Props = { movie: Movie; };
+type Props = { movie: Movie };
 defineProps<Props>();
 </script>
 

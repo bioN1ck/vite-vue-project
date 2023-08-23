@@ -22,11 +22,11 @@ export type MovieRaw = {
   title: string;
   vote_average: number;
   vote_count: number;
-}
+};
 
 export type MovieResponse = {
   data: MovieRaw[];
   totalAmount: number;
   offset: number;
   limit: number;
-}
+};
