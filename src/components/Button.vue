@@ -12,10 +12,6 @@ const props = withDefaults(
      */
     theme?: 'primary' | 'secondary' | 'blurred';
     /**
-     * The type of the button
-     */
-    type?: 'button' | 'submit' | 'reset';
-    /**
      * Size of the button
      */
     size?: 'small' | 'large';
@@ -23,14 +19,9 @@ const props = withDefaults(
   {
     label: '',
     theme: 'primary',
-    type: 'button',
     size: 'small',
   }
 );
-
-const emit = defineEmits<{
-  click: [];
-}>();
 
 const classes = computed(() => ({
   'app-button': true,
@@ -38,15 +29,10 @@ const classes = computed(() => ({
   [`app-button--${props.size}`]: true,
 }));
 
-const onClick = () => {
-  emit('click');
-};
 </script>
 
 <template>
-  <button :type="type" :class="classes" @click="onClick">
-    {{ label }}
-  </button>
+  <button :class="classes">{{ label }}</button>
 </template>
 
 <style scoped>

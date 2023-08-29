@@ -1,25 +1,4 @@
 <script setup lang="ts">
-withDefaults(
-  defineProps<{
-    /**
-     * The type of the input
-     */
-    type?: 'text' | 'number';
-    /**
-     * A placeholder string
-     */
-    placeholder?: string;
-    /**
-     * Initial value
-     */
-    value?: string | number;
-  }>(),
-  {
-    type: 'text',
-    placeholder: '',
-    value: '',
-  }
-);
 
 const emit = defineEmits<{
   changeValue: [value: string];
@@ -31,7 +10,7 @@ const onChangeValue = (event: Event) => {
 </script>
 
 <template>
-  <input class="app-input" :type="type" :placeholder="placeholder" :value="value" @input="onChangeValue($event)" />
+  <input class="app-input" @input="onChangeValue($event)" />
 </template>
 
 <style scoped>

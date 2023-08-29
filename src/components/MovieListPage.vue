@@ -1,49 +1,32 @@
 <script setup lang="ts">
-import { computed, ComputedRef } from 'vue';
+import { ref } from 'vue';
 
-import MovieSearchSection from './MovieSearchSection.vue';
-import Switcher from './Switcher.vue';
+import MovieDetails from './MovieDetails.vue';
 import MovieList from './MovieList.vue';
+import TopSection from './TopSection.vue';
+import MovieSearch from './MovieSearch.vue';
+import SortPanel from './SortPanel.vue';
 
-import { useFetch } from '../composables/useFetch';
-import { Movie, MovieResponse } from '../models/movie.model';
-import { mapRawToMovie } from '../helpers/functions';
+import { Movie } from '../models/movie.model';
+import { useMoviesStore } from '../store/movies';
 
-const { result, execute } = useFetch<MovieResponse>('http://localhost:4000/movies?limit=12');
-execute();
 
-const movies: ComputedRef<Movie[]> = computed(() => {
-  return result.value ? result.value.data.map(mapRawToMovie) : [];
-});
-const total = computed(() => {
-  return result.value?.totalAmount || 0;
-});
+const store = useMoviesStore();
+store.getMovies();
+
+const selectedMovie = ref<Movie | null>(null);
+const setSelectedMovie = (movie: Movie | null) => {
+  selectedMovie.value = movie;
+};
 </script>
 
 <template>
-  <movie-search-section />
+  <top-section @search="() => setSelectedMovie(null)">
+    <movie-search v-if="!selectedMovie" />
+    <movie-details v-if="selectedMovie" :movie="selectedMovie" />
+  </top-section>
 
-  <div class="movie-list-page--row">
-    <div class="movie-list-page--row-counter">
-      <span>{{ total }}</span> movie{{ total > 1 && 's' }} found
-    </div>
-    <Switcher label="Sort by" :buttons="['Release date', 'Rating']" />
-  </div>
+  <sort-panel />
 
-  <movie-list :movies="movies" />
+  <movie-list @select="setSelectedMovie" />
 </template>
-
-<style scoped lang="scss">
-.movie-list-page--row {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 4.5rem;
-  background: #888888;
-  padding: 1rem 7.5rem;
-
-  &-counter span {
-    font-weight: 600;
-  }
-}
-</style>
