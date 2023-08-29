@@ -4,8 +4,7 @@ import { ref } from 'vue';
 import AppInput from './Input.vue';
 import AppButton from './Button.vue';
 
-
-type Props = { initValue: string; };
+type Props = { initValue: string };
 defineProps<Props>();
 
 const queryString = ref('');
@@ -32,12 +31,7 @@ const onButtonPress = () => {
       @changeValue="onChangeValue"
       @keyup.enter="onButtonPress"
     />
-    <app-button
-      class="search-input--btn"
-      size="large"
-      label="search"
-      @click="onButtonPress"
-    />
+    <app-button class="search-input--btn" size="large" label="search" @click="onButtonPress" />
   </div>
 </template>
 

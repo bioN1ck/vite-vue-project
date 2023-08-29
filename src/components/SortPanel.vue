@@ -1,12 +1,10 @@
-<script setup lang='ts'>
+<script setup lang="ts">
 import Switcher from './Switcher.vue';
 
 import { useMoviesStore } from '../store/movies';
 import { SORT_BY_BUTTONS } from '../helpers/constants';
 
-
 const store = useMoviesStore();
-
 </script>
 
 <template>
@@ -14,12 +12,7 @@ const store = useMoviesStore();
     <div class="sort-panel-counter">
       <span>{{ store.total }}</span> movie{{ store.total > 1 && 's' }} found
     </div>
-    <Switcher
-      label="Sort by"
-      :initBtn="store.sortBy"
-      :buttons="SORT_BY_BUTTONS"
-      @change="store.setSortBy"
-    />
+    <Switcher label="Sort by" :init-btn="store.sortBy" :buttons="SORT_BY_BUTTONS" @change="store.setSortBy" />
   </div>
 </template>
 

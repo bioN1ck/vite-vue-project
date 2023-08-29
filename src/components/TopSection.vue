@@ -1,4 +1,4 @@
-<script setup lang='ts'>
+<script setup lang="ts">
 import Logo from './Logo.vue';
 import SearchButton from './SearchButton.vue';
 

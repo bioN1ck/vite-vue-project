@@ -2,9 +2,9 @@ import { ref } from 'vue';
 import { defineStore } from 'pinia';
 
 import { moviesApi, SearchParams } from '../api/movies';
-import { mapRawToMovie} from '../helpers/functions';
+import { mapRawToMovie } from '../helpers/functions';
 import { Movie, RadioBtnType } from '../models/movie.model';
-import { SEARCH_BY_BUTTONS, SORT_BY_BUTTONS } from '../helpers/constants.ts'
+import { SEARCH_BY_BUTTONS, SORT_BY_BUTTONS } from '../helpers/constants.ts';
 
 export const useMoviesStore = defineStore('movies', () => {
   const movies = ref<Movie[]>([]);
@@ -17,7 +17,7 @@ export const useMoviesStore = defineStore('movies', () => {
   const setSortBy = (btn: RadioBtnType) => {
     sortBy.value = btn;
     getMovies();
-  }
+  };
   const setSearchBy = (btn: RadioBtnType) => {
     searchBy.value = btn;
     getMovies();

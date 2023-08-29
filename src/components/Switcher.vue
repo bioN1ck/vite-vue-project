@@ -1,8 +1,7 @@
 <script setup lang="ts">
-import RadioButton from './RadioButton.vue'
+import RadioButton from './RadioButton.vue';
 
 import { RadioBtnType } from '../models/movie.model';
-
 
 type Props = {
   label: string;
@@ -19,11 +18,7 @@ const emit = defineEmits<{
 <template>
   <div class="switcher">
     <span>{{ label }}</span>
-    <radio-button
-      :buttons="buttons"
-      :active-button="initBtn"
-      @change="emit('change', $event)"
-    />
+    <radio-button :buttons="buttons" :active-button="initBtn" @change="emit('change', $event)" />
   </div>
 </template>
 

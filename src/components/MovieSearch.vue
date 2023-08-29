@@ -5,30 +5,18 @@ import Switcher from './Switcher.vue';
 import { useMoviesStore } from '../store/movies';
 import { SEARCH_BY_BUTTONS } from '../helpers/constants';
 
-
 const store = useMoviesStore();
 
 const setSearchFilter = (value: string) => {
   store.setSearchQuery(value);
-}
+};
 </script>
 
 <template>
   <div class="movie-search">
-    <div class="movie-search-title">
-      FIND YOUR MOVIE
-    </div>
-    <search-input
-      class="movie-search-input"
-      :initValue="store.searchQuery"
-      @onSearch="setSearchFilter"
-    />
-    <switcher
-      label="Search by"
-      :initBtn="store.searchBy"
-      :buttons="SEARCH_BY_BUTTONS"
-      @change="store.setSearchBy"
-    />
+    <div class="movie-search-title">FIND YOUR MOVIE</div>
+    <search-input class="movie-search-input" :init-value="store.searchQuery" @onSearch="setSearchFilter" />
+    <switcher label="Search by" :init-btn="store.searchBy" :buttons="SEARCH_BY_BUTTONS" @change="store.setSearchBy" />
   </div>
 </template>
 

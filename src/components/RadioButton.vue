@@ -3,7 +3,6 @@ import { ref } from 'vue';
 
 import { RadioBtnType } from '../models/movie.model';
 
-
 const props = defineProps<{
   /**
    * The list of button labels

@@ -28,7 +28,6 @@ const classes = computed(() => ({
   [`app-button--${props.theme}`]: true,
   [`app-button--${props.size}`]: true,
 }));
-
 </script>
 
 <template>

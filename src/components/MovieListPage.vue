@@ -10,7 +10,6 @@ import SortPanel from './SortPanel.vue';
 import { Movie } from '../models/movie.model';
 import { useMoviesStore } from '../store/movies';
 
-
 const store = useMoviesStore();
 store.getMovies();
 

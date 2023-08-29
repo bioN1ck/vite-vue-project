@@ -4,7 +4,6 @@ import MovieTile from './MovieTile.vue';
 import { Movie } from '../models/movie.model';
 import { useMoviesStore } from '../store/movies';
 
-
 const store = useMoviesStore();
 
 const emit = defineEmits<{
@@ -14,12 +13,7 @@ const emit = defineEmits<{
 
 <template>
   <div class="movie-list">
-    <movie-tile
-      v-for="movie of store.movies"
-      :key="movie.id"
-      :movie="movie"
-      @click="emit('select', movie)"
-    />
+    <movie-tile v-for="movie of store.movies" :key="movie.id" :movie="movie" @click="emit('select', movie)" />
   </div>
 </template>
 
