@@ -11,10 +11,10 @@ const props = defineProps<{
   /**
    * The label chosen by default
    */
-  activeButton: RadioBtnType;
+  activeButton?: RadioBtnType;
 }>();
 
-const selected = ref(props.activeButton);
+const selected = ref(props.activeButton || props.buttons[0]);
 
 const emit = defineEmits<{
   change: [value: RadioBtnType];

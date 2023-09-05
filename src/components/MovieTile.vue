@@ -1,26 +1,27 @@
 <script setup lang="ts">
-import { Directive } from 'vue';
+// import { Directive } from 'vue';
 import { Movie } from '../models/movie.model';
-// import LazyImage from './LazyImage.vue';
 
-const vLazyload: Directive<HTMLImageElement> = {
-  created: (el) => {
-    el.src = 'src/assets/loading-img.png';
-  },
-  mounted: (el, binding) => {
-    const observer = new IntersectionObserver((entries) => {
-      const image = entries[0];
-      if (image.isIntersecting) {
-        el.src = binding.value;
-        observer.disconnect();
-      }
-    });
-    observer.observe(el);
-  },
-  unmounted: () => {
-    // TODO: think about disconnecting observer somehow
-  },
-};
+import LazyImage from './LazyImage.vue';
+
+// const vLazyload: Directive<HTMLImageElement> = {
+//   created: (el) => {
+//     el.src = 'src/assets/loading-img.png';
+//   },
+//   mounted: (el, binding) => {
+//     const observer = new IntersectionObserver((entries: IntersectionObserverEntry[]) => {
+//       console.log('entries: ', entries)
+//       const [image] = entries;
+//       if (image.isIntersecting) {
+//         el.src = binding.value;
+//         observer.disconnect();
+//       }
+//     });
+//     observer.observe(el);
+//   },
+//   // TODO: think about disconnecting observer somehow
+//   unmounted: () => {},
+// };
 
 defineProps<{
   movie: Movie;
@@ -30,8 +31,8 @@ defineProps<{
 <template>
   <div class="movie-tile">
     <div>
-      <img v-lazyload="movie.imageUrl" alt="" />
-      <!--      <lazy-image :src="movie.imageUrl" />-->
+      <!--      <img v-lazyload="movie.imageUrl" alt="" />-->
+      <lazy-image :src="movie.imageUrl" />
       <div class="movie-tile__description">
         <div>
           <h3>{{ movie.movieName }}</h3>

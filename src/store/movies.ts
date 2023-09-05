@@ -4,7 +4,7 @@ import { defineStore } from 'pinia';
 import { moviesApi, SearchParams } from '../api/movies';
 import { mapRawToMovie } from '../helpers/functions';
 import { Movie, RadioBtnType } from '../models/movie.model';
-import { SEARCH_BY_BUTTONS, SORT_BY_BUTTONS } from '../helpers/constants.ts';
+import { SEARCH_BY_BUTTONS, SORT_BY_BUTTONS } from '../helpers/constants';
 
 export const useMoviesStore = defineStore('movies', () => {
   const movies = ref<Movie[]>([]);
@@ -14,17 +14,17 @@ export const useMoviesStore = defineStore('movies', () => {
   const searchBy = ref<RadioBtnType>(SEARCH_BY_BUTTONS[0]);
   const searchQuery = ref('');
 
-  const setSortBy = (btn: RadioBtnType) => {
+  const setSortBy = async (btn: RadioBtnType) => {
     sortBy.value = btn;
-    getMovies();
+    await getMovies();
   };
-  const setSearchBy = (btn: RadioBtnType) => {
+  const setSearchBy = async (btn: RadioBtnType) => {
     searchBy.value = btn;
-    getMovies();
+    await getMovies();
   };
-  const setSearchQuery = (text: string) => {
+  const setSearchQuery = async (text: string) => {
     searchQuery.value = text;
-    getMovies();
+    await getMovies();
   };
 
   const getMovies = async () => {
