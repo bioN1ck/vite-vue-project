@@ -6,9 +6,9 @@ import { createTestingPinia } from '@pinia/testing';
 import SortPanel from '../SortPanel.vue';
 import Switcher from '../Switcher.vue';
 
-import * as api from '../../api/movies';
-import { MOVIE_RESPONSE } from './mocks';
+import * as api from '../../api/api';
 import { useMoviesStore } from '../../store/movies';
+import { SORT_BY_BUTTONS } from '../../helpers/constants';
 
 describe('Sort Panel', () => {
   beforeEach(() => {
@@ -49,15 +49,21 @@ describe('Sort Panel', () => {
   });
 
   it('should update movie list when trigger switcher', async () => {
-    vi.spyOn(api, 'moviesApi').mockImplementation(() => Promise.resolve(MOVIE_RESPONSE));
+    const fetchMovies = vi.fn();
+    vi.spyOn(api, 'getMovies').mockImplementation(() => ({
+      movies: [],
+      total: 3000,
+      fetchMovies,
+    }));
     const wrapper = mount(SortPanel);
     const store = useMoviesStore();
     const buttons = wrapper.findAll('button');
 
-    expect(store.movies.length).toEqual(0);
+    expect(store.sortBy).toEqual(SORT_BY_BUTTONS[0]);
 
     await buttons[1].trigger('click');
 
-    expect(store.movies.length).toEqual(2);
+    expect(store.sortBy).toEqual(SORT_BY_BUTTONS[1]);
+    expect(fetchMovies).toHaveBeenCalledOnce();
   });
 });

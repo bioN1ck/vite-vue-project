@@ -19,7 +19,6 @@ const emit = defineEmits<{
 
 <style scoped lang="scss">
 .top-section {
-  min-height: 396px;
   background-image: url(../assets/section-bg.png);
   background-position: center;
   padding: 20px 60px 2rem;

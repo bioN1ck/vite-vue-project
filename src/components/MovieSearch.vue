@@ -18,7 +18,7 @@ const store = useMoviesStore();
 
 <style scoped lang="scss">
 .movie-search {
-  padding: 2rem 3.75rem;
+  padding: 2rem 3.75rem 3rem;
 
   &-title {
     font-size: 2.5rem;

@@ -1,7 +1,7 @@
-import { MovieResponse } from '../../../api/movies';
-import { MovieRaw, RadioBtnType } from '../../../models/movie.model';
+import { Movie, MovieRaw, RadioBtnType } from '../../../models/movie.model';
+import { mapRawToMovie } from '../../../helpers/functions';
 
-export const MOVIES: MovieRaw[] = [
+export const RAW_MOVIES: MovieRaw[] = [
   {
     id: 337167,
     title: 'Fifty Shades Freed',
@@ -35,13 +35,15 @@ export const MOVIES: MovieRaw[] = [
 ];
 
 export const MOVIE_RESPONSE: MovieResponse = {
-  data: MOVIES,
+  data: RAW_MOVIES,
   totalAmount: 3000,
   offset: 0,
   limit: 2,
 };
 
-export const MOVIE: MovieRaw = MOVIES[0];
+export const MOVIES: Movie[] = RAW_MOVIES.map(mapRawToMovie);
+
+export const MOVIE: Movie = MOVIES[0];
 
 export const RADIO_BUTTONS: RadioBtnType[] = [
   {

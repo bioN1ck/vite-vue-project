@@ -6,7 +6,6 @@ import { createTestingPinia } from '@pinia/testing';
 import MovieList from '../MovieList.vue';
 import MovieTile from '../MovieTile.vue';
 
-import { mapRawToMovie } from '../../helpers/functions';
 import { MOVIES } from './mocks';
 
 const IntersectionObserverMock = vi.fn(() => ({
@@ -36,8 +35,10 @@ describe('Movie List', () => {
           createTestingPinia({
             initialState: {
               movies: {
-                movies: MOVIES.map(mapRawToMovie),
+                movies: MOVIES,
                 total: 3000,
+                isFetching: false,
+                error: null,
               },
             },
           }),
@@ -55,8 +56,10 @@ describe('Movie List', () => {
           createTestingPinia({
             initialState: {
               movies: {
-                movies: MOVIES.map(mapRawToMovie),
+                movies: MOVIES,
                 total: 3000,
+                isFetching: false,
+                error: null,
               },
             },
           }),
@@ -65,6 +68,28 @@ describe('Movie List', () => {
     });
 
     await wrapper.findAllComponents(MovieTile)[0].trigger('click');
-    expect((wrapper as unknown).emitted().select[0][0]).toEqual(mapRawToMovie(MOVIES[0]));
+    expect((wrapper as unknown).emitted().select[0][0]).toEqual(MOVIES[0]);
+  });
+
+  it('should render loading', async () => {
+    const wrapper = mount(MovieList, {
+      global: {
+        plugins: [
+          createTestingPinia({
+            initialState: {
+              movies: {
+                movies: MOVIES,
+                total: 3000,
+                isFetching: false,
+                error: null,
+              },
+            },
+          }),
+        ],
+      },
+    });
+
+    await wrapper.findAllComponents(MovieTile)[0].trigger('click');
+    expect((wrapper as unknown).emitted().select[0][0]).toEqual(MOVIES[0]);
   });
 });
