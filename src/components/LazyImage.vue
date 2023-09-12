@@ -7,8 +7,12 @@ type Props = {
 };
 const props = defineProps<Props>();
 
-const imgRef = ref(null);
-const state = reactive({
+const imgRef = ref<Element | null>(null);
+const state = reactive<{
+  observer: IntersectionObserver | null;
+  intersected: boolean;
+  loaded: boolean;
+}>({
   observer: null,
   intersected: false,
   loaded: false,
@@ -30,15 +34,15 @@ onMounted(() => {
     const image = entries[0];
     if (image.isIntersecting) {
       state.intersected = true;
-      state.observer.disconnect();
+      state.observer!.disconnect();
     }
   });
 
-  state.observer.observe(imgRef.value);
+  state.observer.observe(imgRef.value!);
 });
 
 onBeforeUnmount(() => {
-  state.observer.disconnect();
+  state.observer!.disconnect();
 });
 </script>
 

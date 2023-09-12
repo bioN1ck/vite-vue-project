@@ -30,3 +30,8 @@ export type MovieResponse = {
   offset: number;
   limit: number;
 };
+
+export type RadioBtnType = {
+  label: string;
+  value: string;
+};

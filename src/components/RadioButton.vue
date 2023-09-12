@@ -1,26 +1,28 @@
 <script setup lang="ts">
 import { ref } from 'vue';
 
+import { RadioBtnType } from '../models/movie.model';
+
 const props = defineProps<{
   /**
    * The list of button labels
    */
-  labels: string[];
+  buttons: RadioBtnType[];
   /**
    * The label chosen by default
    */
-  activeLabel?: string;
+  activeButton: RadioBtnType;
 }>();
 
-const selected = ref(props.activeLabel);
+const selected = ref(props.activeButton);
 
 const emit = defineEmits<{
-  change: [value: string];
+  change: [value: RadioBtnType];
 }>();
 
-const onChange = (value: string) => {
-  emit('change', value);
-  selected.value = value;
+const onChange = (btn: RadioBtnType) => {
+  emit('change', btn);
+  selected.value = btn;
 };
 </script>
 
@@ -28,12 +30,12 @@ const onChange = (value: string) => {
   <div class="radio-button--container">
     <button
       class="radio-button--item"
-      :class="{ active: label === selected }"
-      v-for="label in labels"
-      :key="label"
-      @click="onChange(label)"
+      v-for="button in buttons"
+      :key="button.value"
+      :class="{ active: button.value === selected.value }"
+      @click="onChange(button)"
     >
-      {{ label }}
+      {{ button.label }}
     </button>
   </div>
 </template>

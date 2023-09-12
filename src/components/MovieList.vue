@@ -1,17 +1,19 @@
 <script setup lang="ts">
 import MovieTile from './MovieTile.vue';
+
 import { Movie } from '../models/movie.model';
+import { useMoviesStore } from '../store/movies';
 
-type Props = {
-  movies: Movie[];
-};
+const store = useMoviesStore();
 
-defineProps<Props>();
+const emit = defineEmits<{
+  select: [movie: Movie];
+}>();
 </script>
 
 <template>
   <div class="movie-list">
-    <movie-tile v-for="movie of movies" :key="movie.id" :movie="movie" />
+    <movie-tile v-for="movie of store.movies" :key="movie.id" :movie="movie" @click="emit('select', movie)" />
   </div>
 </template>
 
