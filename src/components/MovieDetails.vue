@@ -1,9 +1,8 @@
 <script setup lang="ts">
-import { IMovie } from './MovieTile.vue';
+import { Movie } from '../models/movie.model';
 
-defineProps<{
-  movie: IMovie;
-}>();
+type Props = { movie: Movie };
+defineProps<Props>();
 </script>
 
 <template>
