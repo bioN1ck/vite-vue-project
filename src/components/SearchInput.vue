@@ -1,37 +1,29 @@
 <script setup lang="ts">
-import { ref } from 'vue';
+import { ref, watch } from 'vue';
 
 import AppInput from './Input.vue';
 import AppButton from './Button.vue';
 
-type Props = { initValue: string };
-defineProps<Props>();
+import { useMoviesStore } from '../store/movies';
 
+const store = useMoviesStore();
 const queryString = ref('');
 
-const onChangeValue = (value: string) => {
-  queryString.value = value;
-};
+watch(
+  () => store.searchQuery,
+  (query) => (queryString.value = query),
+  { immediate: true }
+);
 
-const emit = defineEmits<{
-  onSearch: [text: string];
-}>();
-
-const onButtonPress = () => {
-  emit('onSearch', queryString.value);
+const onSearch = () => {
+  store.setSearchQuery(queryString.value);
 };
 </script>
 
 <template>
   <div class="search-input--container">
-    <app-input
-      class="search-input--field"
-      placeholder="Search"
-      :value="initValue"
-      @changeValue="onChangeValue"
-      @keyup.enter="onButtonPress"
-    />
-    <app-button class="search-input--btn" size="large" label="search" @click="onButtonPress" />
+    <app-input class="search-input--field" placeholder="Search" v-model="queryString" @keyup.enter="onSearch" />
+    <app-button class="search-input--btn" size="large" label="search" @click="onSearch" />
   </div>
 </template>
 

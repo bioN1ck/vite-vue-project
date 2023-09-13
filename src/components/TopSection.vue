@@ -1,17 +1,17 @@
 <script setup lang="ts">
-import Logo from './Logo.vue';
 import SearchButton from './SearchButton.vue';
+import Logo from './Logo.vue';
 
-const emit = defineEmits<{
-  search: [];
-}>();
+import { useMoviesStore } from '../store/movies';
+
+const store = useMoviesStore();
 </script>
 
 <template>
   <div class="top-section">
     <div class="top-section--row">
       <logo />
-      <search-button @click="emit('search')" />
+      <search-button @click="() => store.navigateTo('/')" />
     </div>
     <slot />
   </div>

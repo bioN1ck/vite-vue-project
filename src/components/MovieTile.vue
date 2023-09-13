@@ -23,9 +23,7 @@ import LazyImage from './LazyImage.vue';
 //   unmounted: () => {},
 // };
 
-defineProps<{
-  movie: Movie;
-}>();
+defineProps<{ movie: Movie }>();
 </script>
 
 <template>

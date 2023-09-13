@@ -1,15 +1,10 @@
 <script setup lang="ts">
-const emit = defineEmits<{
-  changeValue: [value: string];
-}>();
-
-const onChangeValue = (event: Event) => {
-  emit('changeValue', (event.target as HTMLInputElement).value);
-};
+defineProps<{ modelValue: string }>();
+defineEmits<{ 'update:modelValue': [value: string] }>();
 </script>
 
 <template>
-  <input class="app-input" @input="onChangeValue($event)" />
+  <input class="app-input" :value="modelValue" @input="$emit('update:modelValue', $event.target.value)" />
 </template>
 
 <style scoped>

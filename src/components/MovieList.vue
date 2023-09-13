@@ -1,20 +1,17 @@
 <script setup lang="ts">
 import MovieTile from './MovieTile.vue';
 
-import { Movie } from '../models/movie.model';
 import { useMoviesStore } from '../store/movies';
 
 const store = useMoviesStore();
-
-const emit = defineEmits<{ select: [movie: Movie] }>();
 </script>
 
 <template>
-  <div class="loading" v-if="store.loading">Loading...</div>
-  <div class="error" v-else-if="store.error">Something went wrong...</div>
+  <div class="loading" v-if="store.loadingMovieList">Loading...</div>
+  <div class="error" v-else-if="store.errorMovieList">Something went wrong...</div>
 
   <div class="movie-list" v-else>
-    <movie-tile v-for="movie of store.movies" :key="movie.id" :movie="movie" @click="emit('select', movie)" />
+    <movie-tile v-for="movie of store.movieList" :key="movie.id" :movie="movie" @click="() => store.navigateTo(`/${movie.id}`)" />
   </div>
 </template>
 
@@ -36,6 +33,7 @@ const emit = defineEmits<{ select: [movie: Movie] }>();
 }
 
 .movie-list {
+  flex: 1;
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   grid-column-gap: 60px;

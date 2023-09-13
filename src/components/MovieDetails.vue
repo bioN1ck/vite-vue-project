@@ -1,33 +1,63 @@
 <script setup lang="ts">
-import { Movie } from '../models/movie.model';
+import { onMounted, watch } from 'vue';
 
-type Props = { movie: Movie };
-defineProps<Props>();
+import { useMoviesStore } from '../store/movies';
+
+type Props = { id: string };
+const props = defineProps<Props>();
+
+const store = useMoviesStore();
+
+onMounted(() => store.getMovieById(props.id));
+watch(
+  () => props.id,
+  (nextId) => store.getMovieById(nextId)
+);
 </script>
 
 <template>
-  <div class="movie-details">
-    <img :src="movie.imageUrl" alt="" />
+  <div class="loading" v-if="store.loadingMovie">Loading...</div>
+  <div class="error" v-else-if="store.errorMovie">Something went wrong...</div>
+
+  <div class="movie-details" v-else-if="store.movie !== null">
+    <img :src="store.movie.imageUrl" alt="" />
     <div>
       <div class="movie-details__header">
-        <h2>{{ movie.movieName }}</h2>
-        <div>{{ movie.rating }}</div>
+        <h2>{{ store.movie!.movieName }}</h2>
+        <div>{{ store.movie!.rating }}</div>
       </div>
       <div class="movie-details__genres">
-        {{ movie.relevantGenres.join(', ') }}
+        {{ store.movie!.relevantGenres.join(', ') }}
       </div>
       <div class="movie-details__metadata">
-        <div class="movie-details__metadata-item">{{ movie.releaseYear }} <span>year</span></div>
-        <div class="movie-details__metadata-item">{{ movie.duration }} <span>min</span></div>
+        <div class="movie-details__metadata-item">{{ store.movie!.releaseYear }} <span>year</span></div>
+        <div class="movie-details__metadata-item">{{ store.movie!.duration }} <span>min</span></div>
       </div>
       <p class="movie-details__description">
-        {{ movie.description }}
+        {{ store.movie!.description }}
       </p>
     </div>
   </div>
 </template>
 
-<style scoped>
+<style scoped lang="scss">
+@mixin fallback-screen {
+  height: 455px;
+  display: flex;
+  //flex: 1;
+  justify-content: center;
+  align-items: center;
+  font-size: 32px;
+}
+
+.loading {
+  @include fallback-screen;
+}
+.error {
+  @include fallback-screen;
+  color: #f65261;
+}
+
 .movie-details {
   display: flex;
   color: #ffffff;

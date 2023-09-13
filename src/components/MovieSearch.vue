@@ -11,7 +11,7 @@ const store = useMoviesStore();
 <template>
   <div class="movie-search">
     <div class="movie-search-title">FIND YOUR MOVIE</div>
-    <search-input class="movie-search-input" :init-value="store.searchQuery" @onSearch="store.setSearchQuery" />
+    <search-input class="movie-search-input" />
     <switcher label="Search by" :init-btn="store.searchBy" :buttons="SEARCH_BY_BUTTONS" @change="store.setSearchBy" />
   </div>
 </template>
