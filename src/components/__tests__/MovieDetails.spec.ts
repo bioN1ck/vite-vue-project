@@ -26,5 +26,6 @@ describe('Movie Detail', () => {
 
     expect(wrapper.find('h2').text()).toEqual(MOVIE.title);
     expect(wrapper.find('.movie-details__description').text()).toEqual(MOVIE.overview);
+    expect(wrapper.find('.movie-details__genres').text()).toEqual(MOVIE.genres.join(', '));
   });
 });
