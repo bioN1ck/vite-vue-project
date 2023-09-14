@@ -23,11 +23,7 @@ const props = withDefaults(
   }
 );
 
-const classes = computed(() => ({
-  'app-button': true,
-  [`app-button--${props.theme}`]: true,
-  [`app-button--${props.size}`]: true,
-}));
+const classes = computed(() => ['app-button', `app-button--${props.theme}`, `app-button--${props.size}`]);
 </script>
 
 <template>

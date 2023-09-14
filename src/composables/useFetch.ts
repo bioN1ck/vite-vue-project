@@ -2,7 +2,7 @@ import { Ref, ref } from 'vue';
 
 type Exposed<T> = {
   result: Ref<T | null>;
-  error: any;
+  error: unknown;
   execute: () => void;
 };
 
@@ -14,7 +14,7 @@ export const useFetch = <T>(url: string): Exposed<T> => {
     try {
       const response = await fetch(url);
       result.value = await response.json();
-    } catch (e: any) {
+    } catch (e: unknown) {
       error.value = e;
     }
   };

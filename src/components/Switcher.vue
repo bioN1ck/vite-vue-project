@@ -6,7 +6,7 @@ import { RadioBtnType } from '../models/movie.model';
 type Props = {
   label: string;
   buttons: RadioBtnType[];
-  initBtn: RadioBtnType;
+  initBtn?: RadioBtnType;
 };
 defineProps<Props>();
 
@@ -18,7 +18,7 @@ const emit = defineEmits<{
 <template>
   <div class="switcher">
     <span>{{ label }}</span>
-    <radio-button :buttons="buttons" :active-button="initBtn" @change="emit('change', $event)" />
+    <radio-button :buttons="buttons" :active-button="initBtn || buttons[0]" @change="emit('change', $event)" />
   </div>
 </template>
 

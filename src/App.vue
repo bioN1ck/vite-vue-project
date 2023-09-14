@@ -1,9 +1,9 @@
 <script setup lang="ts">
-import MovieListPage from './components/MovieListPage.vue';
+import HomePage from './components/HomePage.vue';
 </script>
 
 <template>
-  <movie-list-page />
+  <home-page />
 </template>
 
 <style scoped></style>
