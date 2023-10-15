@@ -6,7 +6,6 @@ import { createTestingPinia } from '@pinia/testing';
 import MovieList from '../MovieList.vue';
 import MovieTile from '../MovieTile.vue';
 
-import { mapRawToMovie } from '../../helpers/functions';
 import { MOVIES } from './mocks';
 
 const IntersectionObserverMock = vi.fn(() => ({
@@ -36,8 +35,10 @@ describe('Movie List', () => {
           createTestingPinia({
             initialState: {
               movies: {
-                movies: MOVIES.map(mapRawToMovie),
+                movies: MOVIES,
                 total: 3000,
+                isFetching: false,
+                error: null,
               },
             },
           }),
@@ -45,7 +46,10 @@ describe('Movie List', () => {
       },
     });
 
+    expect(wrapper.find('.movie-list').exists()).toBeTruthy();
     expect(wrapper.findAllComponents(MovieTile).length).toEqual(2);
+    expect(wrapper.find('.loading').exists()).toBeFalsy();
+    expect(wrapper.find('.error').exists()).toBeFalsy();
   });
 
   it('should emit a movie on Movie tile click', async () => {
@@ -55,8 +59,10 @@ describe('Movie List', () => {
           createTestingPinia({
             initialState: {
               movies: {
-                movies: MOVIES.map(mapRawToMovie),
+                movies: MOVIES,
                 total: 3000,
+                loading: false,
+                error: null,
               },
             },
           }),
@@ -65,6 +71,54 @@ describe('Movie List', () => {
     });
 
     await wrapper.findAllComponents(MovieTile)[0].trigger('click');
-    expect((wrapper as unknown).emitted().select[0][0]).toEqual(mapRawToMovie(MOVIES[0]));
+    expect((wrapper as unknown).emitted().select[0][0]).toEqual(MOVIES[0]);
+  });
+
+  it('should render loading screen', async () => {
+    const wrapper = mount(MovieList, {
+      global: {
+        plugins: [
+          createTestingPinia({
+            initialState: {
+              movies: {
+                movies: [],
+                total: 0,
+                loading: true,
+                error: null,
+              },
+            },
+          }),
+        ],
+      },
+    });
+
+    expect(wrapper.find('.loading').exists()).toBeTruthy();
+    expect(wrapper.find('.loading').text()).toEqual('Loading...');
+    expect(wrapper.find('.error').exists()).toBeFalsy();
+    expect(wrapper.find('.movie-list').exists()).toBeFalsy();
+  });
+
+  it('should render error screen', async () => {
+    const wrapper = mount(MovieList, {
+      global: {
+        plugins: [
+          createTestingPinia({
+            initialState: {
+              movies: {
+                movies: [],
+                total: 0,
+                loading: false,
+                error: 'some error',
+              },
+            },
+          }),
+        ],
+      },
+    });
+
+    expect(wrapper.find('.error').exists()).toBeTruthy();
+    expect(wrapper.find('.error').text()).toEqual('Something went wrong...');
+    expect(wrapper.find('.loading').exists()).toBeFalsy();
+    expect(wrapper.find('.movie-list').exists()).toBeFalsy();
   });
 });

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref } from 'vue';
+import { onMounted, ref } from 'vue';
 
 import MovieDetails from './MovieDetails.vue';
 import MovieList from './MovieList.vue';
@@ -11,7 +11,7 @@ import { Movie } from '../models/movie.model';
 import { useMoviesStore } from '../store/movies';
 
 const store = useMoviesStore();
-store.getMovies();
+onMounted(() => store.refreshMovies());
 
 const selectedMovie = ref<Movie | null>(null);
 const setSelectedMovie = (movie: Movie | null) => {

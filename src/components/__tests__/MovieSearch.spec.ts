@@ -6,8 +6,7 @@ import MovieSearch from '../MovieSearch.vue';
 import SearchInput from '../SearchInput.vue';
 import Switcher from '../Switcher.vue';
 
-import * as api from '../../api/movies';
-import { MOVIE_RESPONSE } from './mocks';
+import * as api from '../../api/api';
 import { useMoviesStore } from '../../store/movies';
 import { SEARCH_BY_BUTTONS } from '../../helpers/constants';
 
@@ -22,15 +21,24 @@ describe('Movie Search', () => {
     expect(wrapper).toBeTruthy();
   });
 
-  it('should refresh movie list', async () => {
-    vi.spyOn(api, 'moviesApi').mockImplementation(() => Promise.resolve(MOVIE_RESPONSE));
+  it('should pass a query string into store', async () => {
+    const fetchMovies = vi.fn();
+    vi.spyOn(api, 'getMovies').mockImplementation(() => ({
+      movies: [],
+      total: 3000,
+      fetchMovies,
+    }));
+
     const wrapper = mount(MovieSearch);
     const state = useMoviesStore();
 
-    expect(state.movies).toEqual([]);
+    expect(state.searchQuery).toEqual('');
+
     await wrapper.find('input').setValue('home');
     await wrapper.find('button').trigger('click');
-    expect(state.movies.length).toEqual(2);
+
+    expect(state.searchQuery).toEqual('home');
+    expect(fetchMovies).toHaveBeenCalledOnce();
   });
 
   it('should set a search query in store', async () => {
