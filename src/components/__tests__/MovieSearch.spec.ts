@@ -2,6 +2,8 @@ import { mount } from '@vue/test-utils';
 import { describe, expect, it, vi } from 'vitest';
 
 import MovieSearch from '../MovieSearch.vue';
+import SearchInput from '../SearchInput.vue';
+import Switcher from '../Switcher.vue';
 
 import { useMoviesStore } from '../../store/movies';
 import { SEARCH_BY_BUTTONS } from '../../helpers/constants.ts';
@@ -19,6 +21,7 @@ describe('Movie Search', () => {
 
     expect(wrapper).toBeTruthy();
   });
+
 
   it('should set searchBy param', async () => {
     const setSearchBy = vi.fn();
@@ -41,5 +44,31 @@ describe('Movie Search', () => {
     expect(setSearchBy).toHaveBeenCalledWith(SEARCH_BY_BUTTONS[1]);
     expect(buttons[1].classes()).toContain('active');
     expect(buttons[0].classes('active')).toBeFalsy();
+  });
+
+  it('should set a search query in store', async () => {
+    const wrapper = mount(MovieSearch);
+
+    const store = useMoviesStore();
+    store.setSearchQuery = vi.fn();
+
+    await wrapper.find('input').setValue('home');
+    await wrapper.findComponent(SearchInput).find('button').trigger('click');
+
+    expect(store.setSearchQuery).toHaveBeenCalled();
+    expect(store.setSearchQuery).toHaveBeenCalledWith('home');
+  });
+
+  it('should set a searchBy mode in store', async () => {
+    const wrapper = mount(MovieSearch);
+
+    const store = useMoviesStore();
+    store.setSearchBy = vi.fn();
+
+    const button = await wrapper.findComponent(Switcher).findAll('button')[1];
+    await button.trigger('click');
+
+    expect(store.setSearchBy).toHaveBeenCalled();
+    expect(store.setSearchBy).toHaveBeenCalledWith(SEARCH_BY_BUTTONS[1]);
   });
 });
