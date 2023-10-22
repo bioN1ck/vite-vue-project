@@ -1,21 +1,17 @@
 import { mount } from '@vue/test-utils';
-import { beforeEach, describe, expect, it, vi } from 'vitest';
-import { createPinia, setActivePinia } from 'pinia';
-import { createTestingPinia } from '@pinia/testing';
+import { describe, expect, it, vi } from 'vitest';
 
 import SortPanel from '../SortPanel.vue';
 import Switcher from '../Switcher.vue';
 
-import * as api from '../../api/api';
 import { useMoviesStore } from '../../store/movies';
 import { SORT_BY_BUTTONS } from '../../helpers/constants';
 
-describe('Sort Panel', () => {
-  beforeEach(() => {
-    setActivePinia(createPinia());
-  });
+vi.mock('../../store/movies');
 
+describe('Sort Panel', () => {
   it('should mounts properly', () => {
+    vi.mocked(useMoviesStore).mockReturnValue({});
     const wrapper = mount(SortPanel);
 
     expect(wrapper).toBeTruthy();
@@ -23,25 +19,14 @@ describe('Sort Panel', () => {
 
   it('should render total amount of movies', () => {
     const totalMovies = 568;
-    const wrapper = mount(SortPanel, {
-      global: {
-        plugins: [
-          createTestingPinia({
-            initialState: {
-              movies: {
-                movies: [],
-                total: totalMovies,
-              },
-            },
-          }),
-        ],
-      },
-    });
+    vi.mocked(useMoviesStore).mockReturnValue({ total: totalMovies });
+    const wrapper = mount(SortPanel);
 
     expect(wrapper.find('.sort-panel-counter span').text()).toBe(totalMovies.toString());
   });
 
   it('should render switcher component', () => {
+    vi.mocked(useMoviesStore).mockReturnValue({});
     const wrapper = mount(SortPanel);
 
     const switcher = wrapper.findComponent(Switcher);
@@ -49,21 +34,19 @@ describe('Sort Panel', () => {
   });
 
   it('should update movie list when trigger switcher', async () => {
-    const fetchMovies = vi.fn();
-    vi.spyOn(api, 'getMovies').mockImplementation(() => ({
-      movies: [],
-      total: 3000,
-      fetchMovies,
-    }));
+    const setSortBy = vi.fn();
+    vi.mocked(useMoviesStore).mockReturnValue({
+      sortBy: SORT_BY_BUTTONS[0],
+      setSortBy,
+    });
     const wrapper = mount(SortPanel);
-    const store = useMoviesStore();
     const buttons = wrapper.findAll('button');
 
-    expect(store.sortBy).toEqual(SORT_BY_BUTTONS[0]);
+    expect(buttons[0].text()).toEqual(SORT_BY_BUTTONS[0].label);
 
     await buttons[1].trigger('click');
 
-    expect(store.sortBy).toEqual(SORT_BY_BUTTONS[1]);
-    expect(fetchMovies).toHaveBeenCalledOnce();
+    expect(setSortBy).toHaveBeenCalledOnce();
+    expect(setSortBy).toHaveBeenCalledWith(SORT_BY_BUTTONS[1]);
   });
 });

@@ -6,22 +6,42 @@ import { mapRawToMovie } from '../helpers/functions';
 
 export const getMovies = () => {
   const urlRef = ref('');
-  const movies = ref<Movie[]>([]);
+  const movieList = ref<Movie[]>([]);
   const total = ref<number>(0);
 
   const { isFetching, error, execute } = useFetch(urlRef, {
     afterFetch(ctx: AfterFetchContext<MovieResponse>) {
-      movies.value = ctx.data.data.map(mapRawToMovie);
+      movieList.value = ctx.data.data.map(mapRawToMovie);
       total.value = ctx.data?.totalAmount;
       return ctx;
     },
     immediate: false,
   }).json<MovieResponse>();
 
-  const fetchMovies = async (url: string) => {
+  const fetchMovieList = async (url: string) => {
     urlRef.value = url;
     await execute();
   };
 
-  return { movies, total, loading: isFetching, error, fetchMovies };
+  return { movieList, total, loadingMovieList: isFetching, errorMovieList: error, fetchMovieList };
+};
+
+export const getMovie = () => {
+  const urlRef = ref('');
+  const movie = ref<Movie | null>(null);
+
+  const { isFetching, error, execute } = useFetch(urlRef, {
+    afterFetch(ctx: AfterFetchContext<MovieResponse>) {
+      movie.value = mapRawToMovie(ctx.data);
+      return ctx;
+    },
+    immediate: false,
+  }).json<MovieResponse>();
+
+  const fetchMovie = async (url: string) => {
+    urlRef.value = url;
+    await execute();
+  };
+
+  return { movie, loadingMovie: isFetching, errorMovie: error, fetchMovie };
 };

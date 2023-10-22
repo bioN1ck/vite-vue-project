@@ -1,7 +1,8 @@
-import { computed, ref } from 'vue';
+import { computed, ref, watch } from 'vue';
 import { defineStore } from 'pinia';
+import { LocationQuery, useRoute, useRouter } from 'vue-router';
 
-import { getMovies } from '../api/api';
+import { getMovie, getMovies } from '../api/api';
 import { RadioBtnType } from '../models/movie.model';
 import { SEARCH_BY_BUTTONS, SORT_BY_BUTTONS } from '../helpers/constants';
 
@@ -12,7 +13,12 @@ export type SearchParams = {
   search?: string;
 };
 
+export const BASE_URL = 'http://localhost:4000/movies';
+
 export const useMoviesStore = defineStore('movies', () => {
+  const route = useRoute();
+  const router = useRouter();
+
   const sortBy = ref<RadioBtnType>(SORT_BY_BUTTONS[0]);
   const searchBy = ref<RadioBtnType>(SEARCH_BY_BUTTONS[0]);
   const searchQuery = ref('');
@@ -25,37 +31,62 @@ export const useMoviesStore = defineStore('movies', () => {
       limit: '12',
     };
     const query = new URLSearchParams(params).toString();
-    return `http://localhost:4000/movies?${query}`;
+    return `${BASE_URL}?${query}`;
   });
 
-  const { movies, total, loading, error, fetchMovies } = getMovies();
+  const { movieList, total, loadingMovieList, errorMovieList, fetchMovieList } = getMovies();
+  const { movie, loadingMovie, errorMovie, fetchMovie } = getMovie();
+
+  watch(
+    () => route.query,
+    async (curr: LocationQuery, prev: LocationQuery) => {
+      if (curr.search === undefined) {
+        await router.push({ query: { search: '' } });
+        return;
+      }
+
+      if (curr.search !== prev.search) {
+        searchQuery.value = curr.search;
+        await getMovieList();
+      }
+    }
+  );
 
   const setSortBy = async (btn: RadioBtnType) => {
     sortBy.value = btn;
-    await refreshMovies();
+    await getMovieList();
   };
   const setSearchBy = async (btn: RadioBtnType) => {
     searchBy.value = btn;
-    await refreshMovies();
+    await getMovieList();
   };
   const setSearchQuery = async (text: string) => {
-    searchQuery.value = text;
-    await refreshMovies();
+    await router.push({ query: { search: text } });
   };
 
-  const refreshMovies = async () => await fetchMovies(url.value);
+  const navigateTo = async (path: string) => {
+    await router.push({ path, query: route.query });
+  };
+
+  const getMovieList = async () => await fetchMovieList(url.value);
+  const getMovieById = async (id: string) => fetchMovie(`${BASE_URL}/${id}`);
 
   return {
-    movies,
+    movie,
+    loadingMovie,
+    errorMovie,
+    movieList,
     total,
+    loadingMovieList,
+    errorMovieList,
     sortBy,
     searchBy,
     searchQuery,
-    loading,
-    error,
-    refreshMovies,
+    getMovieList,
+    getMovieById,
     setSortBy,
     setSearchBy,
     setSearchQuery,
+    navigateTo,
   };
 });

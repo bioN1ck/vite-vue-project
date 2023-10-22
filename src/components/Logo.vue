@@ -1,5 +1,5 @@
 <template>
-  <div class="logo"><span>netflix</span>roulette</div>
+  <router-link class="logo" :to="{ path: '/', query: { search: '' } }"> <span>netflix</span>roulette </router-link>
 </template>
 
 <style scoped>
